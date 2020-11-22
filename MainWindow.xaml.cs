@@ -126,5 +126,112 @@ namespace equipmentMangement
                 }
             }
         }
+
+        private void load_Equipment_Data_Click2(object sender, RoutedEventArgs e)
+        {
+            using (reservations_dbEntities1 context = new reservations_dbEntities1())
+            {
+                // debug sql queries
+                //context.Database.Log = Console.WriteLine;
+
+                // query db for equipment information
+                List<equipment> equipmentObjectsList = context.equipment.Include(i => i.reservations).ToList<equipment>();
+
+
+                Sprzet.ItemsSource = equipmentObjectsList;
+            }
+        }
+
+        private void Sprzet_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            listaRezerwacji.Text = "";
+
+            foreach (reservations r in ((equipment)(Sprzet.SelectedItem)).reservations)
+            {
+                //if (r.StartDate > DateTime.Now)
+                    listaRezerwacji.Text += r.startDate + "-" + r.stopDate + '\t' + r.idUser + '\n';
+            }
+
+            kalendarzyk.BlackoutDates.Clear();
+
+            foreach (reservations res in ((equipment)(Sprzet.SelectedItem)).reservations)
+            {
+                CalendarDateRange cdr = new CalendarDateRange((DateTime)res.StartDate, (DateTime)res.StopDate);
+                kalendarzyk.BlackoutDates.Add(cdr);
+            }
+        }
+
+        private void kalendarzyk_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (kalendarzyk.SelectedDates.Count > 0)
+            {
+                poczatekRezerwacji.Text = (kalendarzyk.SelectedDates.First()).ToShortDateString();
+                koniecRezerwacji.Text = (kalendarzyk.SelectedDates.Last()).ToShortDateString();
+            }
+        }
+
+        private void rezerwuj_Click(object sender, RoutedEventArgs e)
+        {
+            bool overlap = false;
+            DateTime poczatek, koniec;
+            if (Sprzet.SelectedIndex == -1)
+            {
+                MessageBox.Show("Wybierz przedmiot z listy");
+                return;
+            }
+
+            try
+            {
+                poczatek = DateTime.Parse(poczatekRezerwacji.Text);
+                koniec = DateTime.Parse(koniecRezerwacji.Text);
+            }
+            catch (FormatException fe)
+            {
+                MessageBox.Show("Podaj datę w odpowednim formacie DD.MM.YYYY");
+                return;
+            }
+
+
+            foreach (reservations r in ((equipment)(Sprzet.SelectedItem)).reservations)
+            {
+                if (koniec > r.StartDate && koniec < r.StopDate)
+                    overlap = true;
+                if (poczatek > r.StartDate && poczatek < r.StopDate)
+                    overlap = true;
+                if (poczatek == r.StartDate || poczatek == r.StopDate
+                    || koniec == r.StartDate || koniec == r.StopDate)
+                    overlap = true;
+            }
+
+            if (overlap == false && DateTime.Parse(poczatekRezerwacji.Text) >= DateTime.Now)
+            {
+
+                //dodaj polecenie do bazy dancyh dodające rezerwację
+
+                //((equipment)Sprzet.SelectedItem).reservations.Add();
+
+                CalendarDateRange cdr = new CalendarDateRange(poczatek, koniec);
+                kalendarzyk.SelectedDates.Clear();
+                kalendarzyk.BlackoutDates.Add(cdr);
+            }
+            else if (overlap == true)
+            {
+                MessageBox.Show("Daty rezerwacji nie mogą na siebie nachodzić!");
+            }
+            else if (DateTime.Parse(poczatekRezerwacji.Text) < DateTime.Now)
+                MessageBox.Show("Nie można rezerwować przeszłych dat");
+
+            listaRezerwacji.Text = "";
+
+            foreach (reservations r in ((equipment)(Sprzet.SelectedItem)).reservations)
+            {
+                if (r.StopDate > DateTime.Now)
+                    listaRezerwacji.Text += r.startDate + "-" + r.stopDate + '\n';
+            }
+
+        }
+
+
+
     }
 }

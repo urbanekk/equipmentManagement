@@ -12,8 +12,61 @@
         <vm:ReservationBasicInfoVM x:Key="reservationBasicInfoVM"/>
     </UserControl.Resources>
 
-    <Grid DataContext="{Binding Source={StaticResource reservationBasicInfoVM}}">
+    <!--<Grid DataContext="{Binding Source={StaticResource reservationBasicInfoVM}}">
         <DataGrid x:Name="reservationInfoDataGrid" Margin="10,10,10,40" ItemsSource="{Binding Reservations, Mode=TwoWay}"/>
         <Button x:Name="loadData" Content="Load data" Margin="10,10,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="80" Command="{Binding LoadData}"/>
+    </Grid>-->
+
+    <Grid DataContext="{Binding ElementName=Sprzet, Path=SelectedItem}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid x:Name="Sprzet" Margin="10"></DataGrid>
+        <!--SelectionChanged="Sprzet_SelectionChanged" Loaded="Sprzet_Loaded"-->
+
+        <!--<StackPanel Grid.Column="0">
+            
+        </StackPanel>-->
+
+        <StackPanel Grid.Column="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="100"/>
+                </Grid.RowDefinitions>
+                <TextBlock FontWeight="Bold">Nazwa:</TextBlock>
+                <TextBlock x:Name="Nazwa" Text="{Binding Path=Nazwa}" Grid.Column="1"/>
+                <TextBlock FontWeight="Bold" Grid.Row="1">Kod</TextBlock>
+                <TextBlock x:Name="Kod" Text="{Binding Path=Kod}" Grid.Row="1" Grid.Column="1"/>
+                <TextBlock FontWeight="Bold" Grid.Row="2">Właściciel:</TextBlock>
+                <TextBlock x:Name="Właściciel" Text="{Binding Path=Wlasciciel}" Grid.Row="2" Grid.Column="1"/>
+                <TextBlock FontWeight="Bold" Grid.Row="3">Zajęty?:</TextBlock>
+                <TextBlock x:Name="Zajęty" Text="{Binding Path=Zajety}" Grid.Row="3" Grid.Column="1"/>
+                <TextBlock FontWeight="Bold" Grid.Row="4" Grid.ColumnSpan="2">Lista przyszłych rezerwacji:</TextBlock>
+                <ScrollViewer Grid.Row="5" Grid.ColumnSpan="2">
+                    <TextBlock x:Name="listaRezerwacji"  ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                               ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="True"/>
+                </ScrollViewer>
+            </Grid>
+
+            <!--<Calendar x:Name="kalendarzyk" SelectionMode="SingleRange" SelectedDatesChanged="kalendarzyk_SelectedDatesChanged">
+            </Calendar>-->
+
+            <TextBlock>Początek rezerwacji:</TextBlock>
+            <TextBox x:Name="poczatekRezerwacji"></TextBox>
+            <TextBlock>Koniec rezerwacji:</TextBlock>
+            <TextBox x:Name="koniecRezerwacji"></TextBox>
+            <!--<Button x:Name="rezerwuj" Click="rezerwuj_Click">Rezerwuj</Button>-->
+        </StackPanel>
     </Grid>
 </UserControl>

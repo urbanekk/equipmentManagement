@@ -28,6 +28,20 @@ namespace equipmentMangement
         public MainWindow()
         {
             InitializeComponent();
+
+            //load data to comboboxes
+            using (reservations_dbEntities1 context = new reservations_dbEntities1())
+            {
+                // query db for user and equipment information - combobox lists
+                List<user> userList = context.user.ToList<user>();
+                List<equipment> eqList = context.equipment.ToList<equipment>();
+
+                foreach (var item in userList)
+                    userComboBox.Items.Add(item.FullName);
+
+                foreach (var item in eqList)
+                    equipmentComboBox.Items.Add(item.Name);
+            }
         }
 
         private void load_User_Data_Click(object sender, RoutedEventArgs e)
@@ -93,38 +107,30 @@ namespace equipmentMangement
 
         private void add_New_Record_Click(object sender, RoutedEventArgs e)
         {
-            if (userFullNameTextbox.Text.Equals("") && userFullNameTextbox.Text.Equals("") && userFullNameTextbox.Text.Equals(""))
+         
+            if (userComboBox.Text.Equals("") || equipmentComboBox.Text.Equals("") || startDateDataPicker.Text.Equals("") || stopDateDataPicker.Text.Equals(""))
                 MessageBox.Show("Wypełnij wszystkie pola!");
             else
             {
                 using (reservations_dbEntities1 context = new reservations_dbEntities1())
                 {
-                    // query db for user information
-                    List<user> userList = context.user.Include(i => i.reservations).ToList<user>();
+                    string tempName = userComboBox.Text.Split(' ')[0];
+                    string tempSurname = userComboBox.Text.Split(' ')[1];
+                    user tempUser = context.user.Where(i => i.Name == tempName).Where(i => i.Surname == tempSurname).FirstOrDefault();
+                    equipment tempEq = context.equipment.Where(i => i.Name == equipmentComboBox.Text).FirstOrDefault();
+                    ICollection<equipment> eqList = new List<equipment>();
+                    eqList.Add(tempEq);
 
-                    int userID;
+
+                    // data to save to db
+                    var reservation = new reservations { idUser = tempUser.idUser, StartDate = startDateDataPicker.SelectedDate.Value, StopDate = stopDateDataPicker.SelectedDate.Value, user = tempUser};
+                    context.reservations.Add(reservation);
 
 
-                    user user = new user();
-                    user = userList.Find(i => i.FullName == userFullNameTextbox.Text);
-
-                    if (user != null)
-                    {
-                        //userID = user.idUser;
-
-                        //reservations temp = new reservations()
-                        //{
-
-                        //};
-                        //context.reservations.Add();
-                    }
-                        
-                    else
-                    {
-                        MessageBox.Show("User not registered! Cannot create record!");
-                    }
+                    context.SaveChanges();
                 }
             }
+            
         }
     }
 }

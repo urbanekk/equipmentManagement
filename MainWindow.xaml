@@ -22,10 +22,11 @@
             <TabItem Header="My reservations">
                 <Grid>
                     <DataGrid Grid.Column="1" x:Name="dataGrid" Margin="10,10,300,10"/>
-                    <TextBox x:Name="userFullNameTextbox" Height="22" TextWrapping="Wrap"  Margin="700,10,80,268" VerticalAlignment="Top" HorizontalAlignment="Right" Width="120"/>
-                    <TextBox x:Name="eqNameTextbox" Height="22" TextWrapping="Wrap" Margin="700,40,80,214" VerticalAlignment="Top" HorizontalAlignment="Right" Width="120"/>
-                    <TextBox x:Name="resStartDate" Height="22" TextWrapping="Wrap" Margin="700,70,80,214" VerticalAlignment="Top" HorizontalAlignment="Right" Width="120"/>
-                    <TextBox x:Name="resStopDate" Height="22" TextWrapping="Wrap" Margin="700,100,80,214" VerticalAlignment="Top" HorizontalAlignment="Right" Width="120"/>
+                    <ComboBox x:Name="userComboBox" HorizontalAlignment="Right" VerticalAlignment="Top" Width="120" Margin="10,10,80,0"/>
+                    <ComboBox x:Name="equipmentComboBox" HorizontalAlignment="Right" VerticalAlignment="Top" Width="120" Margin="10,40,80,0"/>
+                    <DatePicker x:Name="startDateDataPicker" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,70,90,0"/>
+                    <DatePicker x:Name="stopDateDataPicker" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,100,90,0"/>
+                    <Button x:Name="addNewRecord" Content="Add new record" HorizontalAlignment="Right" Margin="10,130,90,10" VerticalAlignment="Top" Width="105" Click="add_New_Record_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Users' reservations">
@@ -38,6 +39,5 @@
         <Button x:Name="loadUserData" Content="Load user data" HorizontalAlignment="Left" Margin="150,0,0,10" VerticalAlignment="Bottom" Width="105" Click="load_User_Data_Click"/>
         <Button x:Name="loadEquipmentData" Content="Load equipment data" HorizontalAlignment="Left" Margin="280,0,0,10" VerticalAlignment="Bottom" Width="130" Click="load_Equipment_Data_Click"/>
         <Button x:Name="loadReservationData" Content="Load reservations data" HorizontalAlignment="Left" Margin="430,0,0,10" VerticalAlignment="Bottom" Width="130" Click="load_Reservation_Data_Click"/>
-        <Button x:Name="addNewRecord" Content="Add new record" HorizontalAlignment="Left" Margin="580,0,0,10" VerticalAlignment="Bottom" Width="105" Click="add_New_Record_Click"/>
     </Grid>
 </Window>

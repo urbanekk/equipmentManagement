@@ -21,7 +21,18 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid x:Name="Sprzet" Margin="10" SelectionChanged="Sprzet_SelectionChanged" ></DataGrid>
+                    <DataGrid x:Name="Sprzet" Margin="10" SelectionChanged="Sprzet_SelectionChanged" IsReadOnly="True">
+                        <DataGrid.Resources>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Background" Value="LightGreen"/>
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="REZERWACJA">
+                                        <Setter Property="Background" Value="LightGreen"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                    </DataGrid>
                     <!-- Loaded="Sprzet_Loaded"-->
 
                     <!--<StackPanel Grid.Column="0">
@@ -29,6 +40,11 @@
         </StackPanel>-->
 
                     <StackPanel Grid.Column="1">
+                        <Label>Poczatek zakresu:</Label>
+                        <DatePicker x:Name="wyborStart"/>
+                        <Label>Koniec zakresu:</Label>
+                        <DatePicker x:Name="wyborKoniec"/>
+                        <Button x:Name="load" Click="load_Equipment_Data_Click2">Załaduj Dane</Button>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -42,6 +58,7 @@
                                 <RowDefinition/>
                                 <RowDefinition Height="100"/>
                             </Grid.RowDefinitions>
+                            
                             <TextBlock FontWeight="Bold">Nazwa:</TextBlock>
                             <TextBlock x:Name="Nazwa" Text="{Binding Path=Name}" Grid.Column="1"/>
                             <TextBlock FontWeight="Bold" Grid.Row="1">Kod</TextBlock>
@@ -62,7 +79,7 @@
                         <TextBlock>Koniec rezerwacji:</TextBlock>
                         <TextBox x:Name="koniecRezerwacji"></TextBox>
                         <Button x:Name="rezerwuj" Click="rezerwuj_Click">Rezerwuj</Button>
-                        <Button x:Name="load" Click="load_Equipment_Data_Click2">Załaduj Dane</Button>
+
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -78,6 +95,58 @@
             <TabItem Header="Users' reservations">
                 <Grid>
                 </Grid>
+            </TabItem>
+            <TabItem x:Name="addUser" Header="Manage Users">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" DataContext="{Binding ElementName=userBox, Path=SelectedItem}">
+                        <ComboBox x:Name="userBox" DropDownOpened="userBox_DropDownOpened" ></ComboBox>
+                        <Label>Imię:</Label>
+                        <TextBox x:Name="Imie" Text="{Binding Path=Name}"></TextBox>
+                        <Label>Nazwisko:</Label>
+                        <TextBox x:Name="Nazwisko" Text="{Binding Path=Surname}"></TextBox>
+                        <Label>Login:</Label>
+                        <TextBox x:Name="Login" Text="{Binding Path=Login}"></TextBox>
+                        <Label>Hasło:</Label>
+                        <TextBox x:Name="Hasło" Text="{Binding Path=Password}"></TextBox>
+                        <Label>Typ użytkownika:</Label>
+                        <ComboBox x:Name="userTyp" Text="{Binding Path=UserType}">
+                            <ComboBoxItem>user</ComboBoxItem>
+                            <ComboBoxItem>admin</ComboBoxItem>
+                        </ComboBox>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Margin="10" Click="Button_Click">Dodaj</Button>
+                            <Button Margin="10" Click="Button_Click_1">Edytuj</Button>
+                            <Button Margin="10" Click="Button_Click_2">Usuń</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="addEquipment" Header="Manage Equipment">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" DataContext="{Binding ElementName=eqBox, Path=SelectedItem}">
+                        <ComboBox x:Name="eqBox" DropDownOpened="eqBox_DropDownOpened"></ComboBox>
+                        <Label>Nazwa:</Label>
+                        <TextBox x:Name="eqName" Text="{Binding Path=Name}"></TextBox>
+                        <Label>Właściciel:</Label>
+                        <TextBox x:Name="owner" Text="{Binding Path=Owner}"></TextBox>
+                        <Label>EID:</Label>
+                        <TextBox x:Name="EID" Text="{Binding Path=EID}"></TextBox>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="DodajSprzet" Margin="10" Click="DodajSprzet_Click">Dodaj</Button>
+                            <Button x:Name ="EdytujSprzet" Margin="10" Click="EdytujSprzet_Click">Edytuj</Button>
+                            <Button x:Name="UsunSprzet" Margin="10" Click="UsunSprzet_Click">Usuń</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
             </TabItem>
         </TabControl>
         <Label Content="User: " HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,10,10,10"/>

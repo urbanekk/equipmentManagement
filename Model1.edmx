@@ -4,18 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="reservations_dbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="reservations_dbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="equipment">
           <Key>
             <PropertyRef Name="idEquipment" />
           </Key>
-          <Property Name="idEquipment" Type="int" Nullable="false" />
+          <Property Name="idEquipment" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="45" />
           <Property Name="Owner" Type="varchar" MaxLength="45" />
           <Property Name="EID" Type="varchar" MaxLength="45" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'def.reservations_db.reservation_equipment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="reservation_equipment">
           <Key>
             <PropertyRef Name="idReservation" />
@@ -28,7 +26,7 @@ warning 6002: The table/view 'def.reservations_db.reservation_equipment' does no
           <Key>
             <PropertyRef Name="idReservations" />
           </Key>
-          <Property Name="idReservations" Type="int" Nullable="false" />
+          <Property Name="idReservations" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="idUser" Type="int" />
           <Property Name="StartDate" Type="date" />
           <Property Name="StopDate" Type="date" />
@@ -37,74 +35,20 @@ warning 6002: The table/view 'def.reservations_db.reservation_equipment' does no
           <Key>
             <PropertyRef Name="idUser" />
           </Key>
-          <Property Name="idUser" Type="int" Nullable="false" />
+          <Property Name="idUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="45" />
           <Property Name="Surname" Type="varchar" MaxLength="45" />
           <Property Name="Login" Type="varchar" MaxLength="45" />
           <Property Name="Password" Type="varchar" MaxLength="45" />
           <Property Name="UserType" Type="varchar" MaxLength="45" />
         </EntityType>
-        <Association Name="idEquipment">
-          <End Role="equipment" Type="Self.equipment" Multiplicity="1" />
-          <End Role="reservation_equipment" Type="Self.reservation_equipment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="equipment">
-              <PropertyRef Name="idEquipment" />
-            </Principal>
-            <Dependent Role="reservation_equipment">
-              <PropertyRef Name="idEquipment" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="idReservation">
-          <End Role="reservations" Type="Self.reservations" Multiplicity="1" />
-          <End Role="reservation_equipment" Type="Self.reservation_equipment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="reservations">
-              <PropertyRef Name="idReservations" />
-            </Principal>
-            <Dependent Role="reservation_equipment">
-              <PropertyRef Name="idReservation" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="idUser">
-          <End Role="user" Type="Self.user" Multiplicity="0..1" />
-          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="idUser" />
-            </Principal>
-            <Dependent Role="reservations">
-              <PropertyRef Name="idUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="reservations_dbModelStoreContainer">
           <EntitySet Name="equipment" EntityType="Self.equipment" Schema="reservations_db" store:Type="Tables" />
+          <EntitySet Name="reservation_equipment" EntityType="Self.reservation_equipment" Schema="reservations_db" store:Type="Tables" />
           <EntitySet Name="reservations" EntityType="Self.reservations" Schema="reservations_db" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="reservations_db" store:Type="Tables" />
-          <EntitySet Name="reservation_equipment" EntityType="Self.reservation_equipment" store:Type="Tables" store:Schema="reservations_db">
-            <DefiningQuery>SELECT
-`reservation_equipment`.`idReservation`, 
-`reservation_equipment`.`idEquipment`
-FROM `reservation_equipment` AS `reservation_equipment`</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="idEquipment" Association="Self.idEquipment">
-            <End Role="equipment" EntitySet="equipment" />
-            <End Role="reservation_equipment" EntitySet="reservation_equipment" />
-          </AssociationSet>
-          <AssociationSet Name="idReservation" Association="Self.idReservation">
-            <End Role="reservations" EntitySet="reservations" />
-            <End Role="reservation_equipment" EntitySet="reservation_equipment" />
-          </AssociationSet>
-          <AssociationSet Name="idUser" Association="Self.idUser">
-            <End Role="user" EntitySet="user" />
-            <End Role="reservations" EntitySet="reservations" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="reservations_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">

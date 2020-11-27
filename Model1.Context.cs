@@ -18,9 +18,6 @@ namespace equipmentMangement
         public reservations_dbEntities1()
             : base("name=reservations_dbEntities1")
         {
-            // eager loading enabled
-            this.Configuration.LazyLoadingEnabled = true;
-            this.Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

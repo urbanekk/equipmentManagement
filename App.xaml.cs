@@ -13,5 +13,9 @@ namespace equipmentMangement
     /// </summary>
     public partial class App : Application
     {
+       public user currentUser;
     }
+
+
+
 }

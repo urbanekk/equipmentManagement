@@ -11,7 +11,8 @@ namespace equipmentMangement
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class reservations
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,17 +26,9 @@ namespace equipmentMangement
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> StopDate { get; set; }
 
-        public string startDate
-        {
-            get { return StartDate.Value.ToString("dd/MM/yyyy"); }
-        }
-
-        public string stopDate
-        {
-            get { return StopDate.Value.ToString("dd/MM/yyyy"); }
-        }
-
+        [ForeignKey("user")]
         public virtual user user { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<equipment> equipment { get; set; }
     }

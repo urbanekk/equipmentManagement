@@ -11,7 +11,6 @@ namespace equipmentMangement
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     
     public partial class user
     {
@@ -27,24 +26,8 @@ namespace equipmentMangement
         public string Login { get; set; }
         public string Password { get; set; }
         public string UserType { get; set; }
-
-        public string FullName
-        {
-            get
-            {
-                return Name + " " + Surname;
-            }
-        }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<reservations> reservations { get; set; }
-
-        public int NumberOfReservations
-        {
-            get 
-            {
-                return reservations.Count();
-            }
-        }
     }
 }

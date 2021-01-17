@@ -114,19 +114,19 @@ namespace equipmentMangement
             {
                 using (reservations_dbEntities1 context = new reservations_dbEntities1())
                 {
+                    // debug sql queries
+                    //context.Database.Log = Console.WriteLine;
+
                     string tempName = userComboBox.Text.Split(' ')[0];
                     string tempSurname = userComboBox.Text.Split(' ')[1];
                     user tempUser = context.user.Where(i => i.Name == tempName).Where(i => i.Surname == tempSurname).FirstOrDefault();
                     equipment tempEq = context.equipment.Where(i => i.Name == equipmentComboBox.Text).FirstOrDefault();
-                    ICollection<equipment> eqList = new List<equipment>();
-                    eqList.Add(tempEq);
-
 
                     // data to save to db
                     var reservation = new reservations { idUser = tempUser.idUser, StartDate = startDateDataPicker.SelectedDate.Value, StopDate = stopDateDataPicker.SelectedDate.Value, user = tempUser};
+                    reservation.equipment.Add(tempEq);
+
                     context.reservations.Add(reservation);
-
-
                     context.SaveChanges();
                 }
             }

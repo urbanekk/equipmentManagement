@@ -110,6 +110,8 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ModelQueries.cs" />
+    <Compile Include="PartialClasses\reservations.cs" />
+    <Compile Include="PartialClasses\user.cs" />
     <Compile Include="reservations.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

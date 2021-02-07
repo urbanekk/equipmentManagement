@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="reservations_dbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="equipment">
+          <Key>
+            <PropertyRef Name="idEquipment" />
+          </Key>
+          <Property Name="idEquipment" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" />
+          <Property Name="Owner" Type="varchar" MaxLength="45" />
+          <Property Name="EID" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="reservation_equipment">
+          <Key>
+            <PropertyRef Name="idReservation" />
+            <PropertyRef Name="idEquipment" />
+          </Key>
+          <Property Name="idReservation" Type="int" Nullable="false" />
+          <Property Name="idEquipment" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reservations">
+          <Key>
+            <PropertyRef Name="idReservations" />
+          </Key>
+          <Property Name="idReservations" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUser" Type="int" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="StopDate" Type="date" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" />
+          <Property Name="Surname" Type="varchar" MaxLength="45" />
+          <Property Name="Login" Type="varchar" MaxLength="45" />
+          <Property Name="Password" Type="varchar" MaxLength="45" />
+          <Property Name="UserType" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <Association Name="idEquipment">
+          <End Role="equipment" Type="Self.equipment" Multiplicity="1" />
+          <End Role="reservation_equipment" Type="Self.reservation_equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="equipment">
+              <PropertyRef Name="idEquipment" />
+            </Principal>
+            <Dependent Role="reservation_equipment">
+              <PropertyRef Name="idEquipment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="idReservation">
+          <End Role="reservations" Type="Self.reservations" Multiplicity="1" />
+          <End Role="reservation_equipment" Type="Self.reservation_equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reservations">
+              <PropertyRef Name="idReservations" />
+            </Principal>
+            <Dependent Role="reservation_equipment">
+              <PropertyRef Name="idReservation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="idUser">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="reservations_dbModelStoreContainer">
+          <EntitySet Name="equipment" EntityType="Self.equipment" Schema="reservations_db" store:Type="Tables" />
+          <EntitySet Name="reservation_equipment" EntityType="Self.reservation_equipment" Schema="reservations_db" store:Type="Tables" />
+          <EntitySet Name="reservations" EntityType="Self.reservations" Schema="reservations_db" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="reservations_db" store:Type="Tables" />
+          <AssociationSet Name="idEquipment" Association="Self.idEquipment">
+            <End Role="equipment" EntitySet="equipment" />
+            <End Role="reservation_equipment" EntitySet="reservation_equipment" />
+          </AssociationSet>
+          <AssociationSet Name="idReservation" Association="Self.idReservation">
+            <End Role="reservations" EntitySet="reservations" />
+            <End Role="reservation_equipment" EntitySet="reservation_equipment" />
+          </AssociationSet>
+          <AssociationSet Name="idUser" Association="Self.idUser">
+            <End Role="user" EntitySet="user" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="reservations_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="equipment">
+          <Key>
+            <PropertyRef Name="idEquipment" />
+          </Key>
+          <Property Name="idEquipment" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Owner" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="EID" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="reservations" Relationship="Self.reservation_equipment" FromRole="equipment" ToRole="reservations" />
+        </EntityType>
+        <EntityType Name="reservations">
+          <Key>
+            <PropertyRef Name="idReservations" />
+          </Key>
+          <Property Name="idReservations" Type="Int32" Nullable="false" />
+          <Property Name="idUser" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" />
+          <Property Name="StopDate" Type="DateTime" />
+          <NavigationProperty Name="user" Relationship="Self.idUser" FromRole="reservations" ToRole="user" />
+          <NavigationProperty Name="equipment" Relationship="Self.reservation_equipment" FromRole="reservations" ToRole="equipment" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Login" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="UserType" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="reservations" Relationship="Self.idUser" FromRole="user" ToRole="reservations" />
+        </EntityType>
+        <Association Name="idUser">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="reservation_equipment">
+          <End Role="equipment" Type="Self.equipment" Multiplicity="*" />
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="reservations_dbEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="equipment" EntityType="Self.equipment" />
+          <EntitySet Name="reservations" EntityType="Self.reservations" />
+          <EntitySet Name="user" EntityType="Self.user" />
+          <AssociationSet Name="idUser" Association="Self.idUser">
+            <End Role="user" EntitySet="user" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="reservation_equipment" Association="Self.reservation_equipment">
+            <End Role="equipment" EntitySet="equipment" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="reservations_dbModelStoreContainer" CdmEntityContainer="reservations_dbEntities1">
+          <EntitySetMapping Name="equipment">
+            <EntityTypeMapping TypeName="reservations_dbModel.equipment">
+              <MappingFragment StoreEntitySet="equipment">
+                <ScalarProperty Name="idEquipment" ColumnName="idEquipment" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="EID" ColumnName="EID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reservations">
+            <EntityTypeMapping TypeName="reservations_dbModel.reservations">
+              <MappingFragment StoreEntitySet="reservations">
+                <ScalarProperty Name="idReservations" ColumnName="idReservations" />
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="StopDate" ColumnName="StopDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user">
+            <EntityTypeMapping TypeName="reservations_dbModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="reservation_equipment" TypeName="reservations_dbModel.reservation_equipment" StoreEntitySet="reservation_equipment">
+            <EndProperty Name="equipment">
+              <ScalarProperty Name="idEquipment" ColumnName="idEquipment" />
+            </EndProperty>
+            <EndProperty Name="reservations">
+              <ScalarProperty Name="idReservations" ColumnName="idReservation" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
